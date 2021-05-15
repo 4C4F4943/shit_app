@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <!--
+        Customize this policy to fit your own app's needs. For more guidance, see:
+            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+        Some notes:
+            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+                * Enable inline JS: add 'unsafe-inline' to default-src
+        -->
+        <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'"/>
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+        <meta name="color-scheme" content="light dark">
+        <script src="js/abc.js"></script>
+
+        <link rel="stylesheet" href="css/index.css">
+        <title>shit_app</title>
+    </head>
+    <body>
+        <div class="app">
+            <div class="abc_explanation" display="block">
+                <p>press the letter before and then the letter after</p>
+            </div>
+            <div class="abc_exercise">
+                <div class="result">
+                <h1 id="the_ltr">not working</h1>
+
+                
+                
+            </div>
+                <p id="opt1"></p>
+                <p id="opt2"></p>
+                <p id="opt3"></p>
+                <p id="opt4"></p>
+                <p id="opt5"></p>
+                <p></p>
+            </div>
+            <svg id="fader"></svg>
+        <script>
+            fadeInPage();
+        </script>
+        <!--<a id="test1">refresh!</a>-->
+        <p id="debug"> </p>
+        </div>
+        <div class="navbar" id="myNavbar">
+            <a href="index.html" >home</a>
+            <a href="months.html">months</a>
+            <a href="abc.html" class="active">abc's</a>
+          </div>
+    </body>
+</html>
+<script>
+let debugThing = document.getElementById("debug");
+
+var bt1 = document.getElementById("opt1");
+var bt2 = document.getElementById("opt2");
+var bt3 = document.getElementById("opt3");
+var bt4 = document.getElementById("opt4");
+var bt5 = document.getElementById("opt5");
+var buttons = [bt1,bt2,bt3,bt4,bt5];
+let bbt1 = false;
+let bbt2 = false;
+let bbt3 = false;
+let bbt4 = false;
+let bbt5 = false;
+var first_button = false;
+var bbts = [bbt1,bbt2,bbt3,bbt4,bbt5];
+var indx1;
+var indx2;
+//bt1.style.color = "white";
+
+var on = (function(){
+    if (window.addEventListener) {
+        return function(target, type, listener){
+            target.addEventListener(type, listener, false);
+        };
+    }
+    else {
+        return function(object, sEvent, fpNotify){
+            object.attachEvent("on" + sEvent, fpNotify);
+        };
+    }
+}());
+
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+  return array;
+}
+
+
+function afterpress(btn,indx)
+{
+    if(indx == indx1){
+        btn.style.color = "green";
+        first_button = true
+    }else if(indx == indx2 && first_button == true)
+    {
+        btn.style.color = "green";
+        abcs();
+    }
+    else{
+        btn.style.color = "red";
+    }
+    //debugThing.innerHTML = "the indxs : "+ indx1+", " + indx2 +" the entered indx: " + indx;
+}
+/*
+on(bt1, "click", function(){bbt1 = true;afterpress(bt1,0);});
+on(bt2, "click", function(){bbt2 = true;afterpress(bt2,1);});
+on(bt3, "click", function(){bbt3 = true;afterpress(bt3,2);});
+on(bt4, "click", function(){bbt4 = true;afterpress(bt4,3);});
+on(bt5, "click", function(){bbt5 = true;afterpress(bt5,4);});*/
+
+on(bt1, "click", function(){afterpress(bt1,0);});
+on(bt2, "click", function(){afterpress(bt2,1);});
+on(bt3, "click", function(){afterpress(bt3,2);});
+on(bt4, "click", function(){afterpress(bt4,3);});
+on(bt5, "click", function(){afterpress(bt5,4);});
+
+
+function generate_abc(){
+  var alf = "abcdefghijklmnopqrstuvwxyz";
+  var ran_int = Math.floor(Math.random() * alf.length);
+  var inp = alf[ran_int]
+  if(ran_int != 0 && ran_int != alf.length-1)
+  {
+  var res1 = alf[ran_int-1];
+  var res2 = alf[ran_int+1];
+
+  }else if (ran_int == 0)
+  {
+    var res1 = "z";
+    var res2 = alf[ran_int+1];
+  }else if (ran_int == alf.length-1)
+  {
+    var res1 = alf[ran_int-1];
+    var res2 = "a";
+  }
+  var alf = alf.replace(inp,"")
+  var alf = alf.replace(res1,"")
+  var alf = alf.replace(res2,"")
+  
+  var false1 = alf[Math.floor(Math.random() * alf.length)];
+  var alf = alf.replace(false1,"");
+  var false2 = alf[Math.floor(Math.random() * alf.length)];
+  var alf = alf.replace(false2,"");
+  var false3 = alf[Math.floor(Math.random() * alf.length)];
+  return [res1,inp,res2,false1,false2,false3];
+};
+
+
+
+function abcs()
+{
+  first_button = false;
+  for(var i = 0; i < buttons.length; i++)
+  {
+      buttons[i].style.color = "black";
+  }
+  var res = generate_abc();
+  var res1 = res[0];
+  var inp = res[1];
+  var res2 = res[2];
+  var false1 = res[3];
+  var false2 = res[4];
+  var false3 = res[5];
+  var inp_el = document.getElementById("the_ltr");
+  inp_el.innerHTML = inp;
+  var elements = buttons;
+  var first = [res1,res2,false1,false2,false3];
+  var ltrs = shuffle(first);
+  
+  for(var i =0; i < ltrs.length;i++)
+  {
+      elements[i].innerHTML = ltrs[i];
+      if(ltrs[i] == res1){indx1=i;};
+      if(ltrs[i] == res2){indx2=i;};
+  }
+//buttons[indx1].style.color = "green";
+//buttons[indx2].style.color = "green";
+}
+abcs();
+
+var el = document.getElementById("test1");
+
+on(el,"click", function(){
+    abcs();
+});
+
+
+
+//debugThing.innerHTML = test13;
+</script>
